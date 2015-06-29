@@ -156,7 +156,13 @@ export default SailsBaseAdapter.extend({
       record.unloadRecord();
     }
   },
-
+  
+  _handleSocketRecordAddedTo: function (store, type, message) {
+    var record = store.getById(type.typeKey, message.id);
+    record.reload();
+    // @todo make this more efficient by pushing the new 'message.addedId' to the collection and letting ember load it when called
+  },
+  
   /**
    * Listen to socket message for a given model
    *
@@ -176,6 +182,7 @@ export default SailsBaseAdapter.extend({
       socket.on(eventName + '.created', bind(this, '_handleSocketRecordCreated', store, type));
       socket.on(eventName + '.updated', bind(this, '_handleSocketRecordUpdated', store, type));
       socket.on(eventName + '.destroyed', bind(this, '_handleSocketRecordDeleted', store, type));
+      socket.on(eventName + '.addedTo', bind(this, '_handleSocketRecordAddedTo', store, type));
     }
   },
 

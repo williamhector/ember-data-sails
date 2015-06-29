@@ -16,3 +16,8 @@
 npm-debug.log
 testem.log
 /.idea
+
+# eclipse
+.buildpath
+.project
+.settings
